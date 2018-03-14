@@ -48,6 +48,10 @@ export class Ctags {
         return this.getConfiguration().get("ctagsPath", "ctags");
     }
 
+    getCtagsIgnoreFile(): string {
+        return this.getConfiguration().get( "ctagsIgnoreFile", "" );
+    }
+
     async checkVersion(): Promise<Option<Error>> {
         if (this.versionOk) {
             return undefined;
@@ -86,6 +90,7 @@ export class Ctags {
                 options.cwd = cwd;
             }
             cp.execFile(this.getExecutablePath(), args, options, callback);
+            vscode.window.showInformationMessage( "ctags created" );
         });
     }
 
@@ -104,7 +109,10 @@ export class Ctags {
         const things = await Promise.all(
             folders.map(folder => {
                 let filename = this.getTagsFileName(folder.uri);
-                let args = DEFAULT_ARGS.concat(["-R", "--perl-kinds=psc", "-f", filename]);
+                if ( exclude !== '' ) {
+                    exclude = "--exclude=@" + folder.uri.fsPath + '/' + this.getCtagsIgnoreFile();
+                }
+                let args = DEFAULT_ARGS.concat( [ "-R", "--perl-kinds=psc", exclude, "-f", filename ] );
                 return this.run(args, folder.uri.fsPath);
             })
         );

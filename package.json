@@ -2,7 +2,7 @@
     "name": "vscode-perl",
     "displayName": "Perl",
     "description": "Perl code intelligence via ctags.",
-    "version": "1.15.0",
+    "version": "1.15.1",
     "author": "Henrik Sjööh <hello@enhenrik.nu> (http://www.enhenrik.nu)",
     "license": "MIT",
     "repository": {
@@ -54,6 +54,11 @@
                     "default": "",
                     "description":
                         "The name of a docker container that will be used to run perltidy. Leave blank if you dont want to use docker."
+                },
+                "perl.ctagsIgnoreFile": {
+                    "type": "string",
+                    "default": "",
+                    "description": "The name of a file for exclude patterns (--exclude=@filename)"
                 }
             }
         }
